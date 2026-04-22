@@ -1,139 +1,110 @@
-﻿using CsharpPractice;
+using CsharpPractice;
 
 var solution = new Solution();
 
-#region AddTwoNumbers
-// var input1 = new ListNode()
-// {
-//     val = 2,
-//     next = new ListNode()
-//     {
-//         val = 4,
-//         next = new ListNode(3)
-//     }
-// };
-
-// var input2 = new ListNode()
-// {
-//     val = 5,
-//     next = new ListNode()
-//     {
-//         val = 6,
-//         next = new ListNode(4)
-//     }
-// };
-
-
-// var addTwoNumbersResult = solution.AddTwoNumbers(input1, input2);
-
-// var addTwoNumbersResultString = "root -> ";
-
-// // 只要目前節點還不是空值，就讓節點資料記錄到result字串，並將當前節點current換成下一個節點
-// while (addTwoNumbersResult != null)
-// {
-//     addTwoNumbersResultString += addTwoNumbersResult.val + " -> ";
-//     addTwoNumbersResult = addTwoNumbersResult.next;
-// }
-
-// Console.WriteLine(addTwoNumbersResultString);
-#endregion
-
-#region LengthOfLongestSubstring
-// var lengthOfLongestSubstringInput = "dvdf";
-// var lengthOfLongestSubstringResult = solution.LengthOfLongestSubstring(lengthOfLongestSubstringInput);
-// Console.WriteLine(lengthOfLongestSubstringResult);
-
-#endregion
-
-#region RomanToInt
-
-// var romanToIntInput = "MDCXCV";
-// var romanToIntResult = solution.RomanToInt(romanToIntInput);
-// Console.WriteLine(romanToIntResult);
-
-#endregion
-
-#region FindMedianSortedArrays
-
-// var findMedianSortedArraysInput1 = new int[]{ 1, 4};
-// var findMedianSortedArraysInput2 = new int[]{ 2, 3};
-// var findMedianSortedArraysResult = solution.FindMedianSortedArrays(findMedianSortedArraysInput1, findMedianSortedArraysInput2);
-// Console.WriteLine(findMedianSortedArraysResult);
-
-#endregion
-
-#region Convert
-
-// var convertInput1 = "PAYPALISHIRING";
-// var convertInput1 = "AB";
-// var convertInput2 = 1;
-// var convertResult = solution.Convert(convertInput1, convertInput2);
-// Console.WriteLine(convertResult);
-
-#endregion
-
-#region Regular Expression Matching (IsMatch)
-
-var isMatchInput1List = new List<string>();
-var isMatchInput2List = new List<string>();
-var isMatchOutputResult = new List<bool>();
-// isMatchInput1List.Add("mississippi");
-// isMatchInput2List.Add("mis*is*ip*.");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("mississippi");
-// isMatchInput2List.Add("mis*is*p*.");
-// isMatchOutputResult.Add(false);
-
-// isMatchInput1List.Add("aaa");
-// isMatchInput2List.Add("ac*ab*a");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("aab");
-// isMatchInput2List.Add("c*a*b");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("aa");
-// isMatchInput2List.Add("a*");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("ab");
-// isMatchInput2List.Add(".*");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("ab");
-// isMatchInput2List.Add(".*c");
-// isMatchOutputResult.Add(false);
-
-// isMatchInput1List.Add("aaa");
-// isMatchInput2List.Add("a*a");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("aaa");
-// isMatchInput2List.Add("ab*a");
-// isMatchOutputResult.Add(false);
-
-// isMatchInput1List.Add("aaa");
-// isMatchInput2List.Add("ab*a*c*a");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("a");
-// isMatchInput2List.Add("ab*");
-// isMatchOutputResult.Add(true);
-
-// isMatchInput1List.Add("a");
-// isMatchInput2List.Add("ab*a");
-// isMatchOutputResult.Add(false);
-
-isMatchInput1List.Add("abc");
-isMatchInput2List.Add("a***abc");
-isMatchOutputResult.Add(true);
-
-for (int i = 0; i < isMatchInput1List.Count; i++)
+var solutions = new Dictionary<int, (string Name, Action Run)>
 {
-    var isMatchResult = solution.IsMatch(isMatchInput1List[i], isMatchInput2List[i]);
-    Console.WriteLine($"Result: {isMatchResult}, Expected: {isMatchOutputResult[i] == isMatchResult}");
-}
+    {
+        1, ("AddTwoNumbers", () =>
+        {
+            var input1 = new ListNode(2, new ListNode(4, new ListNode(3)));
+            var input2 = new ListNode(5, new ListNode(6, new ListNode(4)));
+            var result = solution.AddTwoNumbers(input1, input2);
+            var resultString = "root -> ";
+            while (result != null)
+            {
+                resultString += result.val + " -> ";
+                result = result.next;
+            }
+            Console.WriteLine(resultString);
+        })
+    },
+    {
+        2, ("LengthOfLongestSubstring", () =>
+        {
+            var input = "dvdf";
+            var result = solution.LengthOfLongestSubstring(input);
+            Console.WriteLine($"Input: \"{input}\", Result: {result}");
+        })
+    },
+    {
+        3, ("RomanToInt", () =>
+        {
+            var input = "MDCXCV";
+            var result = solution.RomanToInt(input);
+            Console.WriteLine($"Input: \"{input}\", Result: {result}");
+        })
+    },
+    {
+        4, ("FindMedianSortedArrays", () =>
+        {
+            var input1 = new int[] { 1, 4 };
+            var input2 = new int[] { 2, 3 };
+            var result = solution.FindMedianSortedArrays(input1, input2);
+            Console.WriteLine($"Input: [{string.Join(", ", input1)}] and [{string.Join(", ", input2)}], Result: {result}");
+        })
+    },
+    {
+        5, ("Convert", () =>
+        {
+            var input = "PAYPALISHIRING";
+            var numRows = 3;
+            var result = solution.Convert(input, numRows);
+            Console.WriteLine($"Input: \"{input}\", numRows: {numRows}, Result: \"{result}\"");
+        })
+    },
+    {
+        6, ("IsMatch (Regular Expression Matching)", () =>
+        {
+            var testCases = new List<(string s, string p, bool expected)>
+            {
+                ("abc", "a***abc", true),
+                ("aa", "a*", true),
+                ("ab", ".*", true),
+                ("mississippi", "mis*is*p*.", false),
+            };
+            foreach (var (s, p, expected) in testCases)
+            {
+                var result = solution.IsMatch(s, p);
+                Console.WriteLine($"s=\"{s}\", p=\"{p}\", Result: {result}, Match Expected: {expected == result}");
+            }
+        })
+    },
+};
 
-#endregion
+while (true)
+{
+    Console.WriteLine();
+    Console.WriteLine("===== CsharpPractice Solution Menu =====");
+    foreach (var kv in solutions)
+    {
+        Console.WriteLine($"  {kv.Key}. {kv.Value.Name}");
+    }
+    Console.WriteLine("  0. Exit");
+    Console.WriteLine("=========================================");
+    Console.Write("請輸入數字選擇要執行的 Solution: ");
+
+    var input = Console.ReadLine();
+    if (!int.TryParse(input, out var choice))
+    {
+        Console.WriteLine("無效的輸入，請輸入數字。");
+        continue;
+    }
+
+    if (choice == 0)
+    {
+        Console.WriteLine("Bye!");
+        break;
+    }
+
+    if (!solutions.TryGetValue(choice, out var selected))
+    {
+        Console.WriteLine("找不到對應的 Solution，請重新輸入。");
+        continue;
+    }
+
+    Console.WriteLine($"\n--- 執行 {selected.Name} ---");
+    selected.Run();
+    Console.WriteLine("--- 執行完畢 ---");
+}
 
