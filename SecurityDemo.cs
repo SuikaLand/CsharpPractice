@@ -106,7 +106,7 @@ public class SecurityDemo
         var baseDir = @"C:\App\Files\";
 
         // 危險：直接將使用者輸入組合為檔案路徑，未做任何驗證
-        var dangerousPath = Path.Combine(baseDir, userInput);
+        var dangerousPath = Path.Join(baseDir, userInput);
         Console.WriteLine($"[Path Traversal 範例] 產生的危險路徑: {dangerousPath}");
         Console.WriteLine($"[Path Traversal 範例] 攻擊範例輸入: ..\\..\\..\\Windows\\System32\\drivers\\etc\\hosts");
 
