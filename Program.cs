@@ -1,4 +1,4 @@
-using CsharpPractice;
+﻿using CsharpPractice;
 
 var solution = new Solution();
 
@@ -68,6 +68,22 @@ var solutions = new Dictionary<int, (string Name, Action Run)>
                 var result = solution.IsMatch(s, p);
                 Console.WriteLine($"s=\"{s}\", p=\"{p}\", Result: {result}, Match Expected: {expected == result}");
             }
+        })
+    },
+    {
+        7, ("SecurityDemo (GitHub Security 測試)", () =>
+        {
+            var demo = new SecurityDemo();
+
+            Console.WriteLine("\n[--- Secret Scanning 範例 ---]");
+            demo.HardcodedGitHubToken();
+            demo.HardcodedAwsKey();
+            demo.HardcodedDbConnectionString();
+
+            Console.WriteLine("\n[--- Code Scanning (CodeQL) 範例 ---]");
+            demo.SqlInjectionDemo("1 OR 1=1; DROP TABLE Users;--");
+            demo.PathTraversalDemo(@"..\..\..\..\Windows\System32\drivers\etc\hosts");
+            demo.CommandInjectionDemo("file.txt & whoami & net user hacker P@ss /add");
         })
     },
 };

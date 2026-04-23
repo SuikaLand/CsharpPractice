@@ -1,0 +1,60 @@
+# CodeQL 靜態分析 Workflow
+# 用途：啟用 GitHub Code Scanning，自動掃描 C# 程式碼中的安全漏洞
+# 觸發條件：
+#   - push 到 main / master 分支
+#   - 針對 main / master 的 pull request
+#   - 每週一早上 06:00 UTC 定期掃描
+#
+# 掃描完成後，可在 GitHub → Security → Code scanning 查看結果
+name: CodeQL Security Analysis
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  schedule:
+    # 每週一 06:00 UTC 執行定期掃描
+    - cron: '0 6 * * 1'
+
+jobs:
+  analyze:
+    name: Analyze (csharp)
+    runs-on: ubuntu-latest
+
+    permissions:
+      # 允許 CodeQL 讀取原始碼
+      contents: read
+      # 允許 CodeQL 將掃描結果寫回 Security 頁籤
+      security-events: write
+      # 允許在 Private repo 使用 CodeQL
+      actions: read
+
+    steps:
+      # 步驟 1：取出原始碼
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 步驟 2：初始化 CodeQL 分析引擎，指定掃描語言為 csharp
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          # 使用 security-and-quality 查詢套件，涵蓋 OWASP Top 10 相關規則
+          queries: security-and-quality
+
+      # 步驟 3：設定 .NET 環境
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.x'
+
+      # 步驟 4：建置專案（CodeQL 需要在建置過程中收集分析資料）
+      - name: Build
+        run: dotnet build CsharpPractice.csproj --configuration Release
+
+      # 步驟 5：執行 CodeQL 分析並上傳結果到 GitHub Security
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:csharp"
