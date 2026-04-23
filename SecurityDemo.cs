@@ -80,10 +80,10 @@ public class SecurityDemo
         Console.WriteLine($"[SQL Injection 範例] 產生的危險 SQL: {dangerousSql}");
 
         // 以下為實際有漏洞的 ADO.NET 寫法（已註解，不真正執行）
-        // using var conn = new SqlConnection(DbConnectionString);
-        // var cmd = new SqlCommand(dangerousSql, conn);   // ← 直接使用拼接字串，有 SQL Injection 風險
-        // conn.Open();
-        // var reader = cmd.ExecuteReader();
+        using var conn = new SqlConnection(DbConnectionString);
+        var cmd = new SqlCommand(dangerousSql, conn);   // ← 直接使用拼接字串，有 SQL Injection 風險
+        conn.Open();
+        var reader = cmd.ExecuteReader();
 
         // 正確的參數化寫法應為：
         // var cmd = new SqlCommand("SELECT * FROM Users WHERE Id = @id", conn);
@@ -111,7 +111,7 @@ public class SecurityDemo
         Console.WriteLine($"[Path Traversal 範例] 攻擊範例輸入: ..\\..\\..\\Windows\\System32\\drivers\\etc\\hosts");
 
         // 以下為實際有漏洞的寫法（已註解，不真正執行，避免本機副作用）
-        // var fileContent = File.ReadAllText(dangerousPath);  // ← 直接讀取，有 Path Traversal 風險
+        var fileContent = File.ReadAllText(dangerousPath);  // ← 直接讀取，有 Path Traversal 風險
 
         // 正確的驗證寫法應為：
         // var fullPath = Path.GetFullPath(dangerousPath);
@@ -139,13 +139,13 @@ public class SecurityDemo
         Console.WriteLine($"[Command Injection 範例] 攻擊範例輸入: file.txt & whoami & net user hacker P@ss /add");
 
         // 以下為實際有漏洞的寫法（已註解，不真正執行，避免本機副作用）
-        // var psi = new ProcessStartInfo("cmd.exe", dangerousArgs)  // ← 有 Command Injection 風險
-        // {
-        //     RedirectStandardOutput = true,
-        //     UseShellExecute = false
-        // };
-        // var proc = Process.Start(psi);
-        // var output = proc?.StandardOutput.ReadToEnd();
+        var psi = new ProcessStartInfo("cmd.exe", dangerousArgs)  // ← 有 Command Injection 風險
+        {
+            RedirectStandardOutput = true,
+            UseShellExecute = false
+        };
+        var proc = Process.Start(psi);
+        var output = proc?.StandardOutput.ReadToEnd();
 
         // 正確做法：避免使用 shell；若需執行外部程式，直接傳入獨立引數
         // var psi = new ProcessStartInfo("type", userInput)  // 直接傳檔名，不透過 cmd /c 解析
